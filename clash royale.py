@@ -15,7 +15,7 @@ class player():
         self.y = y
         self.pygame = pygame
         self.surface = surface
-        self.heroes = ['Wizard','giant','Musketeers','hunter','SpearGoblin','Archer','Dart goblin','Executioner']
+        self.heroes = ['Wizard','giant','Musketeers','hunter','Barbarian','Archer','Knight','hog']
         self.heroes_push = []
         self.check = [1]
         self.replace1 = False
@@ -116,37 +116,18 @@ class player():
         self.pygame.draw.circle(self.surface,(255,255,255),(x,y),5,0)
     def drawsoldier(self):
         for b in self.soldiers:
-            if b.healthheroes() == True:
-                b.moveplayer1()
-                b.drawhero()
+            if b.image == 'giant'or b.image == 'Knight' or b.image == 'hog' or b.image == 'Barbarian':
+                if b.healthheroesUnarmed() == True:
+                    b.moveplayer1Unarmed()
+                    b.drawhero()
+            else:
+                if b.healthheroes() == True:
+                    b.moveplayer1()
+                    b.drawhero()
 
-class Bullet():
-    def __init__(self,x,y,pygame,surface):
-        self.x = x
-        self.y = y
-        self.pygame = pygame
-        self.surface = surface
-        self.speed = 10
-    def moveToUp(self):
-        self.y -= self.speed
-    def moveToDown(self):
-        self.y += self.speed
-    def drawbulletUpToDown(self):
-        if self.y < 250:
-            bulletimage = self.pygame.image.load('bullet.png')
-            self.surface.blit(bulletimage,(self.x,self.y))
-    def drawbulletDownToUp(self):
-        if self.y > 350:
-            bulletimage = self.pygame.image.load('bullet.png')
-            self.surface.blit(bulletimage,(self.x,self.y))
-    def drawbullets2(self):
-        if self.y > 152:
-            bulletimage = self.pygame.image.load('bullet.png')
-            self.surface.blit(bulletimage, (self.x, self.y))
-    def drawbullets1(self):
-        if self.y < 420:
-            bulletimage = self.pygame.image.load('bullet.png')
-            self.surface.blit(bulletimage, (self.x, self.y))
+
+
+
 class player2():
     def __init__(self,x,y,pygame,surface):
         self.wizard = None
@@ -161,7 +142,7 @@ class player2():
         self.y = y
         self.pygame = pygame
         self.surface = surface
-        self.heroes = ['Wizard','giant','Musketeers','hunter','SpearGoblin','Archer','Dart goblin','Executioner']
+        self.heroes = ['Wizard','giant','Musketeers','hunter','Barbarian','Archer','Knight','hog']
         self.heroes_push = []
         self.check = [1]
         self.replace1 = False
@@ -262,9 +243,14 @@ class player2():
         self.pygame.draw.circle(self.surface,(255,255,255),(x,y),5,0)
     def drawsoldier(self):
         for b in self.soldiers:
-            if b.healthheroes() == True:
-                b.moveplayer2()
-                b.drawhero()
+            if b.image == 'giant'or b.image == 'Knight' or b.image == 'hog' or b.image == 'Barbarian':
+                if b.healthheroesUnarmed() == True:
+                    b.moveplayer2Unarmed()
+                    b.drawhero()
+            else:
+                if b.healthheroes() == True:
+                    b.moveplayer2()
+                    b.drawhero()
 
 class soldier():
     def __init__(self,x,y,pygame,surface,image):
@@ -274,7 +260,7 @@ class soldier():
         self.y = y
         self.image = image
         self.Bullets = []
-        self.health = {'Wizard':120,'Archer':60,'giant':200,'Dart goblin':70,'hunter':130,'SpearGoblin':50,'Executioner':120,'Musketeers':100}
+        self.health = {'Wizard':120,'Archer':60,'giant':200,'Knight':70,'hunter':130,'Barbarian':50,'hog':120,'Musketeers':100}
     def drawhero(self):
         image = self.pygame.image.load(str(self.image)+'.jpg')
         self.surface.blit(image,(self.x,self.y))
@@ -301,6 +287,28 @@ class soldier():
             self.x += 1
         if 753 < self.x < 865:
             self.x -=1
+    def moveplayer2Unarmed(self):
+        if 65 < self.y < 382 and (self.x == 536 or self.x == 753):
+            self.y += 1
+        if 470 < self.x < 536:
+            self.x += 1
+        if 536 < self.x < 670:
+            self.x -= 1
+        if 670 < self.x < 753:
+            self.x += 1
+        if 753 < self.x < 865:
+            self.x -=1
+    def moveplayer1Unarmed(self):
+        if 470 < self.x < 536:
+            self.x += 1
+        if 536 < self.x < 670:
+            self.x -= 1
+        if 670 < self.x < 753:
+            self.x += 1
+        if 753 < self.x < 865:
+            self.x -=1
+        if  180 < self.y < 680 and (self.x == 536 or self.x == 753):
+            self.y -= 1
 
     def healthheroes(self):
         if self.y == 260 and self.x == 536:
@@ -325,9 +333,43 @@ class soldier():
                 tower1.healthtowers['tower1'] -= 2
                 self.health[str(self.image)] -= 1
 
-        elif self.y == 325 and self.x == 753 and self.health[str(self.image)] > 0 and tower4.healthtowers['tower4'] > 0:
+        elif self.y == 325 and self.x == 753 and self.health[str(self.image)] > 0 and tower4.healthtowers['tower2'] > 0:
             if int(timer) %2 == 0:
                 tower2.fireDownToUp()
+                self.fireUpToDown()
+                self.drawBulletUpToDown()
+                tower2.healthtowers['tower2'] -= 2
+                self.health[str(self.image)] -= 1
+        if self.health[str(self.image)] == 0:
+            return False
+        else:
+            return True
+    def healthheroesUnarmed(self):
+        if self.y == 180 and self.x == 536:
+            if int(timer) %2 == 0 and self.health[str(self.image)] > 0 and tower3.healthtowers['tower3'] > 0:
+                tower3.fireforUnarmed(550,170)
+                tower3.healthtowers['tower3'] -= 2
+                self.fireDownToUp()
+                self.drawBulletDownToUp()
+                self.health[str(self.image)] -= 1
+        if self.y == 180 and self.x == 753 and self.health[str(self.image)] > 0 and tower4.healthtowers['tower4'] > 0:
+            if int(timer) %2 == 0:
+                tower4.fireforUnarmed(765,170)
+                tower4.healthtowers['tower4'] -= 2
+                self.fireDownToUp()
+                self.drawBulletDownToUp()
+                self.health[str(self.image)] -= 1
+        if self.y == 382 and self.x == 536 and self.health[str(self.image)] > 0 and tower1.healthtowers['tower1'] > 0:
+            if int(timer) %2 == 0 :
+                tower1.fireforUnarmed(550,410)
+                self.fireUpToDown()
+                self.drawBulletUpToDown()
+                tower1.healthtowers['tower1'] -= 2
+                self.health[str(self.image)] -= 1
+
+        elif self.y == 382 and self.x == 753 and self.health[str(self.image)] > 0 and tower2.healthtowers['tower2'] > 0:
+            if int(timer) %2 == 0:
+                tower2.fireforUnarmed(765,410)
                 self.fireUpToDown()
                 self.drawBulletUpToDown()
                 tower2.healthtowers['tower2'] -= 2
@@ -369,6 +411,38 @@ class tower():
         for i in self.BulletDownToUp:
             i.moveToUp()
             i.drawbulletDownToUp()
+    def fireforUnarmed(self,x,y):
+        bulletimage = self.pygame.image.load('bullet.png')
+        self.surface.blit(bulletimage, (x, y))
+class Bullet():
+    def __init__(self,x,y,pygame,surface):
+        self.x = x
+        self.y = y
+        self.pygame = pygame
+        self.surface = surface
+        self.speed = 10
+    def moveToUp(self):
+        self.y -= self.speed
+    def moveToDown(self):
+        self.y += self.speed
+    def drawbulletUpToDown(self):
+        if self.y < 250:
+            bulletimage = self.pygame.image.load('bullet.png')
+            self.surface.blit(bulletimage,(self.x,self.y))
+    def drawbulletDownToUp(self):
+        if self.y > 350:
+            bulletimage = self.pygame.image.load('bullet.png')
+            self.surface.blit(bulletimage,(self.x,self.y))
+    def drawbullets2(self):
+        if self.y > 152:
+            bulletimage = self.pygame.image.load('bullet.png')
+            self.surface.blit(bulletimage, (self.x, self.y))
+    def drawbullets1(self):
+        if self.y < 420:
+            bulletimage = self.pygame.image.load('bullet.png')
+            self.surface.blit(bulletimage, (self.x, self.y))
+
+
 windowwidth = 1280
 windowheight = 605
 window = pygame.display.set_mode((windowwidth,windowheight),pygame.FULLSCREEN)
@@ -433,11 +507,10 @@ while True:
             if event.key == pygame.K_ESCAPE:
                 pygame.quit()
                 sys.exit()
-            if 483 < mousepos[0] < 777 and 465 < mousepos[1] < 574:
-                if mouseState[0] == True:
-                    start_battle = True
-                    start_sound.stop()
-                    battle_sound.play(-1)
+        if 483 < mousepos[0] < 777 and 465 < mousepos[1] < 574 and  mouseState[0] == True:
+                start_battle = True
+                start_sound.stop()
+                battle_sound.play(-1)
     joystuck_count = pygame.joystick.get_count()
     #for i in range(1):
     joystick = pygame.joystick.Joystick(0)
@@ -481,11 +554,11 @@ while True:
 
         draw_game()
         timer2()
-        # print(tower1.healthtowers['tower1'])
+        # print(tower2.healthtowers['tower2'])
+        #
 
         # print(mousepos)
 
     else:
         window.blit(start_Screen,(0,0))
     pygame.display.update()
-
