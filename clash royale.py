@@ -433,7 +433,8 @@ while True:
             if event.key == pygame.K_ESCAPE:
                 pygame.quit()
                 sys.exit()
-            if event.key == pygame.K_SPACE:
+            if 483 < mousepos[0] < 777 and 465 < mousepos[1] < 574:
+                if mouseState[0] == True:
                 start_battle = True
                 start_sound.stop()
                 battle_sound.play(-1)
