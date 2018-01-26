@@ -260,7 +260,7 @@ class soldier():
         self.y = y
         self.image = image
         self.Bullets = []
-        self.health = {'Wizard':120,'Archer':60,'giant':200,'Knight':70,'hunter':130,'Barbarian':50,'hog':120,'Musketeers':100}
+        self.health = {'Wizard':656,'Archer':300,'giant':1100,'Knight':1000,'hunter':576,'Barbarian':1100,'hog':944,'Musketeers':600}
     def drawhero(self):
         image = self.pygame.image.load(str(self.image)+'.jpg')
         self.surface.blit(image,(self.x,self.y))
@@ -314,33 +314,62 @@ class soldier():
         if self.y == 260 and self.x == 536:
             if int(timer) %2 == 0 and self.health[str(self.image)] > 0 and tower3.healthtowers['tower3'] > 0:
                 tower3.fireUpToDown()
-                tower3.healthtowers['tower3'] -= 2
+                if self.image == 'Wizard':
+                    tower3.healthtowers['tower3'] -= 4
+                if self.image == 'Archer':
+                    tower3.healthtowers['tower3'] -= 2
+                if self.image == 'Musketters':
+                    tower3.healthtowers['tower3'] -= 4
+                if self.image == 'hunter':
+                    tower3.healthtowers['tower3'] -= 4
                 self.fireDownToUp()
                 self.drawBulletDownToUp()
-                self.health[str(self.image)] -= 1
+                self.health[str(self.image)] -= 5
+
         if self.y == 260 and self.x == 753 and self.health[str(self.image)] > 0 and tower4.healthtowers['tower4'] > 0:
             if int(timer) %2 == 0:
                 tower4.fireUpToDown()
-                tower4.healthtowers['tower4'] -= 2
+                if self.image == 'Wizard':
+                    tower4.healthtowers['tower4'] -= 4
+                if self.image == 'Archer':
+                    tower4.healthtowers['tower4'] -= 2
+                if self.image == 'Musketters':
+                    tower4.healthtowers['tower4'] -= 4
+                if self.image == 'hunter':
+                    tower4.healthtowers['tower4'] -= 4
                 self.fireDownToUp()
                 self.drawBulletDownToUp()
-                self.health[str(self.image)] -= 1
+                self.health[str(self.image)] -= 5
         if self.y == 325 and self.x == 536 and self.health[str(self.image)] > 0 and tower1.healthtowers['tower1'] > 0:
             if int(timer) %2 == 0 :
                 tower1.fireDownToUp()
                 self.fireUpToDown()
                 self.drawBulletUpToDown()
-                tower1.healthtowers['tower1'] -= 2
-                self.health[str(self.image)] -= 1
+                if self.image == 'Wizard':
+                    tower1.healthtowers['tower1'] -= 4
+                if self.image == 'Archer':
+                    tower1.healthtowers['tower1'] -= 2
+                if self.image == 'Musketters':
+                    tower1.healthtowers['tower1'] -= 4
+                if self.image == 'hunter':
+                    tower1.healthtowers['tower1'] -= 4
+                self.health[str(self.image)] -= 5
 
-        elif self.y == 325 and self.x == 753 and self.health[str(self.image)] > 0 and tower4.healthtowers['tower2'] > 0:
+        elif self.y == 325 and self.x == 753 and self.health[str(self.image)] > 0 and tower2.healthtowers['tower2'] > 0:
             if int(timer) %2 == 0:
                 tower2.fireDownToUp()
                 self.fireUpToDown()
                 self.drawBulletUpToDown()
-                tower2.healthtowers['tower2'] -= 2
-                self.health[str(self.image)] -= 1
-        if self.health[str(self.image)] == 0:
+                if self.image == 'Wizard':
+                    tower3.healthtowers['tower2'] -= 4
+                if self.image == 'Archer':
+                    tower3.healthtowers['tower2'] -= 2
+                if self.image == 'Musketters':
+                    tower3.healthtowers['tower2'] -= 4
+                if self.image == 'hunter':
+                    tower3.healthtowers['tower2'] -= 4
+                self.health[str(self.image)] -= 5
+        if self.health[str(self.image)] <= 0:
             return False
         else:
             return True
@@ -348,33 +377,61 @@ class soldier():
         if self.y == 180 and self.x == 536:
             if int(timer) %2 == 0 and self.health[str(self.image)] > 0 and tower3.healthtowers['tower3'] > 0:
                 tower3.fireforUnarmed(550,170)
-                tower3.healthtowers['tower3'] -= 2
+                if self.image == 'Knight':
+                    tower3.healthtowers['tower3'] -= 4
+                if self.image == 'giant':
+                    tower3.healthtowers['tower3'] -= 7
+                if self.image == 'hog':
+                    tower3.healthtowers['tower3'] -= 5
+                if self.image == 'Barbarian':
+                    tower3.healthtowers['tower3'] -= 6
                 self.fireDownToUp()
                 self.drawBulletDownToUp()
-                self.health[str(self.image)] -= 1
+                self.health[str(self.image)] -= 5
         if self.y == 180 and self.x == 753 and self.health[str(self.image)] > 0 and tower4.healthtowers['tower4'] > 0:
             if int(timer) %2 == 0:
                 tower4.fireforUnarmed(765,170)
-                tower4.healthtowers['tower4'] -= 2
+                if self.image == 'Knight':
+                    tower4.healthtowers['tower4'] -= 4
+                if self.image == 'giant':
+                    tower4.healthtowers['tower4'] -= 7
+                if self.image == 'hog':
+                    tower4.healthtowers['tower4'] -= 5
+                if self.image == 'Barbarian':
+                    tower4.healthtowers['tower4'] -= 6
                 self.fireDownToUp()
                 self.drawBulletDownToUp()
-                self.health[str(self.image)] -= 1
+                self.health[str(self.image)] -= 5
         if self.y == 382 and self.x == 536 and self.health[str(self.image)] > 0 and tower1.healthtowers['tower1'] > 0:
             if int(timer) %2 == 0 :
                 tower1.fireforUnarmed(550,410)
                 self.fireUpToDown()
                 self.drawBulletUpToDown()
-                tower1.healthtowers['tower1'] -= 2
-                self.health[str(self.image)] -= 1
+                if self.image == 'Knight':
+                    tower1.healthtowers['tower1'] -= 4
+                if self.image == 'giant':
+                    tower1.healthtowers['tower1'] -= 7
+                if self.image == 'hog':
+                    tower1.healthtowers['tower1'] -= 5
+                if self.image == 'Barbarian':
+                    tower1.healthtowers['tower1'] -= 6
+                self.health[str(self.image)] -= 5
 
         elif self.y == 382 and self.x == 753 and self.health[str(self.image)] > 0 and tower2.healthtowers['tower2'] > 0:
             if int(timer) %2 == 0:
                 tower2.fireforUnarmed(765,410)
                 self.fireUpToDown()
                 self.drawBulletUpToDown()
-                tower2.healthtowers['tower2'] -= 2
-                self.health[str(self.image)] -= 1
-        if self.health[str(self.image)] == 0:
+                if self.image == 'Knight':
+                    tower2.healthtowers['tower2'] -= 4
+                if self.image == 'giant':
+                    tower2.healthtowers['tower2'] -= 7
+                if self.image == 'hog':
+                    tower2.healthtowers['tower2'] -= 5
+                if self.image == 'Barbarian':
+                    tower2.healthtowers['tower2'] -= 6
+                self.health[str(self.image)] -= 5
+        if self.health[str(self.image)] <= 0:
             return False
         else:
             return True
@@ -398,7 +455,7 @@ class tower():
         self.surface = surface
         self.BulletsUpToDown = []
         self.BulletDownToUp = []
-        self.healthtowers = {'tower1': 1400, 'tower2': 1400, 'tower3': 1400, 'tower4': 1400}
+        self.healthtowers = {'tower1': 2786, 'tower2': 2786, 'tower3': 2786, 'tower4': 2786}
     def fireUpToDown(self):
         self.BulletsUpToDown.append(Bullet(self.x,self.y,self.pygame,self.surface))
     def drawUpToDown(self):
@@ -555,7 +612,7 @@ while True:
         draw_game()
         timer2()
         # print(tower2.healthtowers['tower2'])
-        #
+
 
         # print(mousepos)
 
