@@ -348,3 +348,143 @@ class soldier():
         for i in self.Bullets:
             i.moveToDown()
             i.drawbullets1()
+class tower():
+    def __init__(self,x,y,pygame,surface):
+        self.x = x
+        self.y = y
+        self.pygame = pygame
+        self.surface = surface
+        self.BulletsUpToDown = []
+        self.BulletDownToUp = []
+        self.healthtowers = {'tower1': 1400, 'tower2': 1400, 'tower3': 1400, 'tower4': 1400}
+    def fireUpToDown(self):
+        self.BulletsUpToDown.append(Bullet(self.x,self.y,self.pygame,self.surface))
+    def drawUpToDown(self):
+        for i in self.BulletsUpToDown:
+            i.moveToDown()
+            i.drawbulletUpToDown()
+    def fireDownToUp(self):
+        self.BulletDownToUp.append(Bullet(self.x,self.y,self.pygame,self.surface))
+    def drawDownToUp(self):
+        for i in self.BulletDownToUp:
+            i.moveToUp()
+            i.drawbulletDownToUp()
+windowwidth = 1280
+windowheight = 605
+window = pygame.display.set_mode((windowwidth,windowheight),pygame.FULLSCREEN)
+battleScreen = pygame.image.load('battle Screen.jpg')
+start_Screen = pygame.image.load('start_Screen.jpg')
+player = player(windowwidth/2 ,windowheight/2 ,pygame ,window)
+player2 = player2(windowwidth/2,windowheight/2,pygame,window)
+start_sound = pygame.mixer.Sound('menu.ogg')
+start_sound.play(-1)
+bullet = pygame.image.load('bullet.png')
+box = pygame.image.load('box.jpg')
+box2 = pygame.image.load('box.jpg')
+battle_sound = pygame.mixer.Sound('battle.ogg')
+pygame.joystick.init()
+tower1 = tower(548,420,pygame,window)
+tower2 = tower(765,420,pygame,window)
+tower3 = tower(548,148,pygame,window)
+tower4 = tower(765,148,pygame,window)
+font = pygame.font.Font(None, 40)
+blue = pygame.Color('dodgerblue')
+clock = pygame.time.Clock()
+timer = 100
+dt = 0
+def timer2():
+    global timer,blue,dt,clock,font
+    timer -= dt
+    if timer <= 0:
+        timer = 0
+    txt = font.render(str(round(timer, 2)), True, blue)
+    window.blit(txt, (100, 200))
+    dt = clock.tick(300) / 1000
+
+def draw_game():
+    global hat ,x ,y
+    window.blit(battleScreen,(0,0))
+    window.blit(box,(934,475))
+    window.blit(box2, (11, 67))
+    player.push()
+    player2.push()
+    player.click(L1,L2,R1,R2,X,x1,y1)
+    player.drawsoldier()
+    player2.click(L12,L22,R12,R22,X2,x2,y2)
+    player2.drawsoldier()
+    tower1.drawDownToUp()
+    tower2.drawDownToUp()
+    tower3.drawUpToDown()
+    tower4.drawUpToDown()
+start_battle = False
+x1 = 640
+y1= 395
+x2 = 665
+y2 = 273
+while True:
+    mouseState = pygame.mouse.get_pressed()
+    mousepos = pygame.mouse.get_pos()
+    window.fill((0,0,0))
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            pygame.quit()
+            sys.exit()
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_ESCAPE:
+                pygame.quit()
+                sys.exit()
+            if event.key == pygame.K_SPACE:
+                start_battle = True
+                start_sound.stop()
+                battle_sound.play(-1)
+    joystuck_count = pygame.joystick.get_count()
+    #for i in range(1):
+    joystick = pygame.joystick.Joystick(0)
+    joystick.init()
+    hats = joystick.get_numhats()
+    hat = joystick.get_hat(0)
+    butttons = joystick.get_numbuttons()
+    L1 = joystick.get_button(4)
+    L2 = joystick.get_button(5)
+    R1 = joystick.get_button(6)
+    R2 = joystick.get_button(7)
+    X = joystick.get_button(2)
+    joystick = pygame.joystick.Joystick(1)
+    joystick.init()
+    hats2 = joystick.get_numhats()
+    hat2 = joystick.get_hat(0)
+    butttons2 = joystick.get_numbuttons()
+    L12 = joystick.get_button(4)
+    L22 = joystick.get_button(5)
+    R12 = joystick.get_button(6)
+    R22 = joystick.get_button(7)
+    X2 = joystick.get_button(2)
+
+    if start_battle == True:
+        if hat[0] == 1:
+            x1 += 5
+        if hat[0] == -1:
+            x1 -= 5
+        if hat[1] == 1:
+            y1 -= 5
+        if hat[1] == -1 :
+            y1 += 5
+        if hat2[0] == 1:
+            x2 += 5
+        if hat2[0] == -1:
+            x2 -= 5
+        if hat2[1] == 1:
+            y2 -= 5
+        if hat2[1] == -1:
+            y2 += 5
+
+        draw_game()
+        timer2()
+        # print(tower1.healthtowers['tower1'])
+
+        # print(mousepos)
+
+    else:
+        window.blit(start_Screen,(0,0))
+    pygame.display.update()
+
